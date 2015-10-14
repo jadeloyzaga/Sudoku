@@ -19,7 +19,13 @@ td {
 	text-align: center;
 }
 
-/* Highlighting the 3x3 grids */
+/*	Highlighting the grid the user is focused on.
+	It may be useful to highlight the row and col in some way for the user. */
+td:hover {
+	background-color: red;
+}
+
+/* 	Highlighting the 3x3 grids */
 td:first-child {
   border-left:solid;
 }

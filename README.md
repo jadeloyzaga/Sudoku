@@ -1,6 +1,22 @@
 # Sudoku
 
-Initial thoughts and plans
+10/14 - Thinking about user input
+
+Simple interface is done, but now we have to consider how to implement adding the user's input.
+
+Buttons vs Text Fields
+Buttons:
+- Will need a way to select which cell you want to add a number into, not everyone will approach a sudoku one direction, but rather they will jump around the grid filling in the easiest to dirtermin cells and eliminating the possibilities for the harder ones
+- Buttons will also allow a place to show non-valid options, as that button could be disabled from the user.
+
+Text field:
+- Quicker to type in the answer rather then clicking around with the mouse.
+- Will have to consider how it looks on mobile vs tablets vs web since it hides part of the screen and may obscure the rest of the sudoku.
+- input checking, only accept number 1 - 9.
+
+The best solution would be a combination of the two, but i feel like for this example, time effective solutions will win out.
+
+10/13 - Initial thoughts and plans
 
 Time frame : 3 Days (Let's get this in by Friday)
 

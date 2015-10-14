@@ -18,3 +18,20 @@ td {
 	width: 1em;
 	text-align: center;
 }
+
+/* Highlighting the 3x3 grids */
+td:first-child {
+  border-left:solid;
+}
+
+td:nth-child(3n) {
+  border-right:solid ;
+}
+
+tr:first-child {
+  border-top:solid;
+}
+
+tr:nth-child(3n) td {
+  border-bottom:solid ;
+}

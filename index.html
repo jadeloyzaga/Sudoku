@@ -13,125 +13,140 @@
 	</head>
 
 	<body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="js/scripts.js"></script>
+
 		<h1>Let's play Sudoku</h1>
+		
+		<button class="valueButton">1</button>
+		<button class="valueButton">2</button>
+		<button class="valueButton">3</button>
+		<button class="valueButton">4</button>
+		<button class="valueButton">5</button>
+		<button class="valueButton">6</button>
+		<button class="valueButton">7</button>
+		<button class="valueButton">8</button>
+		<button class="valueButton">9</button>
+
+		<!-- TODO: generate this grid programatically-->
+		<!-- only allow non programmed cells to be written into -->
 		<table border="1">
 			<tr>
-				<td>5</td>
-				<td>3</td>
-				<td></td>
+				<td class="non-editable">5</td>
+				<td class="non-editable">3</td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td>7</td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="non-editable">7</td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td></td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 			</tr>
 			<tr>
-				<td>6</td>
-				<td></td>
-				<td></td>
+				<td class="non-editable">6</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td>1</td>
-				<td>9</td>
-				<td>5</td>
+				<td class="non-editable">1</td>
+				<td class="non-editable">9</td>
+				<td class="non-editable">5</td>
 		
-				<td></td>
-				<td></td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 			</tr>
 			<tr>
-				<td></td>
-				<td>9</td>
-				<td>8</td>
+				<td class="editable"></td>
+				<td class="non-editable">9</td>
+				<td class="non-editable">8</td>
 		
-				<td></td>
-				<td></td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td>6</td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="non-editable">6</td>
+				<td class="editable"></td>
 			</tr>
 			<tr>
-				<td>8</td>
-				<td></td>
-				<td></td>
+				<td class="non-editable">8</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td>6</td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="non-editable">6</td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td></td>
-				<td>3</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="non-editable">3</td>
 			</tr>
 			<tr>
-				<td>4</td>
-				<td></td>
-				<td></td>
+				<td class="non-editable">4</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td>8</td>
-				<td></td>
-				<td>3</td>
+				<td class="non-editable">8</td>
+				<td class="editable"></td>
+				<td class="non-editable">3</td>
 		
-				<td></td>
-				<td></td>
-				<td>1</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="non-editable">1</td>
 			</tr>
 			<tr>
-				<td>7</td>
-				<td></td>
-				<td></td>
+				<td class="non-editable">7</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td>2</td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="non-editable">2</td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td></td>
-				<td>6</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="non-editable">6</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td>6</td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="non-editable">6</td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td></td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td>2</td>
-				<td>8</td>
-				<td></td>
+				<td class="non-editable">2</td>
+				<td class="non-editable">8</td>
+				<td class="editable"></td>
 			</tr>
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td>4</td>
-				<td>1</td>
-				<td>9</td>
+				<td class="non-editable">4</td>
+				<td class="non-editable">1</td>
+				<td class="non-editable">9</td>
 		
-				<td></td>
-				<td></td>
-				<td>5</td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="non-editable">5</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td>8</td>
-				<td></td>
+				<td class="editable"></td>
+				<td class="non-editable">8</td>
+				<td class="editable"></td>
 		
-				<td></td>
-				<td>7</td>
-				<td>9</td>
+				<td class="editable"></td>
+				<td class="non-editable">7</td>
+				<td class="non-editable">9</td>
 			</tr>
 		</table>
 	</body>

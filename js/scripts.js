@@ -20,7 +20,11 @@ $(document).ready(function() {
 
     $(".valueButton").click(function() {
         inputValue = $(this).text();
+    	
+    	$("#value").removeAttr("id");
+
     	console.log("assigning " + inputValue);
+    	$(this).attr("ID", "value");
     });
 
   	$(".editable").click(function() {
@@ -57,9 +61,7 @@ function loadTable(game) {
 		}
 	}
 	body.appendChild(table);
-}
-
-
+};
 
 function getRow(x) {
 	return Math.floor(x.id/9);
@@ -68,13 +70,3 @@ function getRow(x) {
 function getCol(y) {
 	return y.id%9;
 };
-
-function allInRow(x) {
-	row = getRow(x);
-	// val = [];
-
-	for(i = 0; i < 9; i++) {
-		console.log(document.getElementById(row*9+i).value);
-	}
-	// alert(val);
-}

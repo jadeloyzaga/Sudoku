@@ -34,7 +34,7 @@ $(document).ready(function() {
     		board[$(this).attr("id")] = inputValue;
     		$(this).text(inputValue);
     		console.log(board);
-
+    		isValid($(this));
     		// alert("row is " + allInRow(this));
     	}
   	});
@@ -63,7 +63,7 @@ function loadTable(game) {
 			}
 		}
 	}
-	console.log(board);
+	// console.log(board);
 	body.appendChild(table);
 };
 
@@ -74,3 +74,39 @@ function getRow(x) {
 function getCol(y) {
 	return y.id%9;
 };
+
+function isValid(cell) {
+	var cellId = $(cell).attr("id");
+	var valid = true;
+
+	//find the cell next to this one
+	var c = cellId;
+	c++;
+
+	if ($(board)[cellId] == $(board)[c]) {
+
+
+		
+		console.log("invalid");
+		valid = false;
+	} else {
+		console.log("valid");
+		
+		valid = true;
+	}
+console.log("cell: " + $(board)[cellId] + " next door: " + $(board)[c]);
+	if (!valid) {
+		$(cell).addClass("invalid");
+	}
+	if (valid) {
+		$(cell).removeClass("invalid");
+	}
+};
+
+
+
+
+
+
+
+

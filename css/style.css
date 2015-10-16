@@ -49,6 +49,10 @@ button {
 	background-color: #84D9D2;
 }
 
+.invalid {
+	background-color: #FEB68E;
+}
+
 .non-editable {
 	background-color: #CBCBCB;
 }
@@ -56,7 +60,6 @@ button {
 .valueBar {
 	margin-bottom: 20px;
 }
-
 
 #value {
 	background-color: #ADDAD3;

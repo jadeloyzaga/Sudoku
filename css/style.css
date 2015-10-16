@@ -4,6 +4,9 @@ body {
     font-family: helvetica, arial, sans-serif;
 }
 
+div {
+    margin: 20px;
+}
 
 table { 
     /*background-color: red;*/
@@ -37,10 +40,10 @@ tr:nth-child(3n) td {
   border-bottom:solid ;
 }
 
-button {
+.delButton{
     font-size: 18px;
-    width: 2em;
     height: 2em;
+
 }
 
 /*  Highlighting the grid the user is focused on.
@@ -57,10 +60,13 @@ button {
     background-color: #CBCBCB;
 }
 
-.valueBar {
-    margin-bottom: 20px;
+.valueButton {
+    font-size: 18px;
+    width: 2em;
+    height: 2em;
 }
 
 #value {
     background-color: #ADDAD3;
 }
+

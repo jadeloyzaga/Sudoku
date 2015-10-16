@@ -12,7 +12,7 @@ var startGame = [
 				"","","",		"","8","",		"","7","9"
 				]
 
-
+var board = [];
 var inputValue = '';
 
 $(document).ready(function() {
@@ -31,18 +31,19 @@ $(document).ready(function() {
     	if (inputValue == '') {
     		console.log("select a number to add to this cell");
     	} else {
-    		
-
+    		board[$(this).attr("id")] = inputValue;
     		$(this).text(inputValue);
+    		console.log(board);
+
     		// alert("row is " + allInRow(this));
     	}
   	});
 });
 
 function loadTable(game) {
-	var body = document.body,
-        table  = document.createElement('table');
-        table.border = "1";
+	var body = document.body;
+    var table  = document.createElement('table');
+    table.border = "1";
 
 	for (i = 0; i < 9; i++) {
 		var tr = table.insertRow();
@@ -54,12 +55,15 @@ function loadTable(game) {
 			td.appendChild(document.createTextNode(value));
 			td.id = index;
 			if (value == "") {
-				$(td).addClass ("editable");				
+				$(td).addClass ("editable");
+				board.push(value);				
 			} else {
 				$(td).addClass ("non-editable");
+				board.push(value);
 			}
 		}
 	}
+	console.log(board);
 	body.appendChild(table);
 };
 

@@ -31,6 +31,8 @@ $(document).ready(function() {
         if (inputValue == '') {
             console.log("select a number to add to this cell");
         } else {
+
+
             board[$(this).attr("id")] = inputValue;
             $(this).text(inputValue);
             console.log(board);
@@ -67,31 +69,23 @@ function loadTable(game) {
     body.appendChild(table);
 };
 
+// Is passed the cell's id value to return which row the cell sits in
+// 0 - 8
 function getRow(x) {
-    return Math.floor(x.id/9);
+    return Math.floor(x/9);
 };
 
+// is passed the cell's id value to return which col the cell sits in
+// 0 - 8
 function getCol(y) {
-    return y.id%9;
+    return y%9;
 };
 
 function isValid(cell) {
     var cellId = $(cell).attr("id");
-    var valid = true;
+    var valid = checkRow(cellId) && checkCol(cellId);
 
-    //find the cell next to this one
-    var c = cellId;
-    c++;
 
-    if ($(board)[cellId] == $(board)[c]) {    
-        console.log("invalid");
-        valid = false;
-    } else {
-        console.log("valid");
-        valid = true;
-    }
-    console.log("cell: " + $(board)[cellId] + " next door: " + $(board)[c]);
-    
     if (!valid) {
         $(cell).addClass("invalid");
     }
@@ -100,10 +94,48 @@ function isValid(cell) {
     }
 };
 
+// Checks to see if there is another cell in this row that has the same value in it
+function checkRow(cellId) {
+    var row = getRow(cellId);
+    
+    var valid = true;
+    var cellVal = $(board)[cellId];
 
+    for (i = 0; i < 9; i++) {
+        var checkVal = board[9*row+i];
 
+        if (getCol(cellId) == i) {
+            continue;
+        } else if (cellVal == checkVal) {
+            console.log("we have a match " + cellVal + " matches " + (9*row+i) + ":" + $(board)[9*row+i]);
+            valid = false;
+            break;
+            highlightClash(checkVal);
+        }
+    }
+    return valid;
+};
 
+// Checks to see if there is another cell in this row that has the same value in it
+function checkCol(cellId) {
+    var col = getCol(cellId);
+    
+    var valid = true;
+    var cellVal = $(board)[cellId];
 
+    for (i = 0; i < 9; i++) {
+        var checkVal = board[9*i+col];
 
+        if (getRow(cellId) == i) {
+            continue;
+        } else if (cellVal == checkVal) {
+            console.log("we have a match " + cellVal + " matches " + (9*i+col) + ":" + $(board)[9*i+col]);
+            valid = false;
+            break;
+            highlightClash(checkVal);
+        }
+    }
+    return valid;
+}
 
 

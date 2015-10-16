@@ -83,18 +83,15 @@ function isValid(cell) {
     var c = cellId;
     c++;
 
-    if ($(board)[cellId] == $(board)[c]) {
-
-
-        
+    if ($(board)[cellId] == $(board)[c]) {    
         console.log("invalid");
         valid = false;
     } else {
         console.log("valid");
-        
         valid = true;
     }
-console.log("cell: " + $(board)[cellId] + " next door: " + $(board)[c]);
+    console.log("cell: " + $(board)[cellId] + " next door: " + $(board)[c]);
+    
     if (!valid) {
         $(cell).addClass("invalid");
     }

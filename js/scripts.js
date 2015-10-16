@@ -25,6 +25,7 @@ var startGame = [
 //                   "2","8","7",       "4","1","9",    "6","3","5",
 //                   "3","4","5",       "2","8","6",      "1","7","9"
 //                 ];
+
 var idToGridMap = [ 0, 0, 0,  1, 1, 1,  2, 2, 2, 
                     0, 0, 0,  1, 1, 1,  2, 2, 2, 
                     0, 0, 0,  1, 1, 1,  2, 2, 2, 
@@ -37,8 +38,7 @@ var idToGridMap = [ 0, 0, 0,  1, 1, 1,  2, 2, 2,
                     6, 6, 6,  7, 7, 7,  8, 8, 8,                     
                     6, 6, 6,  7, 7, 7,  8, 8, 8 
                   ];
-                  
-
+       
 var gridToIdMap = [ [0,1,2,9,10,11,18,19,20],       // grid 0
                     [3,4,5,12,13,14,21,22,23],      // grid 1
                     [6,7,8,15,16,17,24,25,26],      // grid 2
@@ -49,28 +49,27 @@ var gridToIdMap = [ [0,1,2,9,10,11,18,19,20],       // grid 0
                     [57,58,59,66,67,68,75,76,77],   // grid 7
                     [60,61,62,69,70,71,78,79,80]    // grid 8
                   ];
+
 var board = [];
 var inputValue = '';
 var filledCells = 0;
 
-var checkingCells = [];
+// for searching for valid/invalid moves
+var invalidMap = {};
 
 $(document).ready(function() {
     $(".valueButton").click(function() {
         inputValue = $(this).text();
-
         $("#value").removeAttr("id");
-
-        console.log("assigning " + inputValue);
         $(this).attr("ID", "value");
     });
-    //TODO: This should really be an ID
+
     $("#clearButton").click(function() {
         if (inputValue != '') {
             inputValue = '';
-            filledCells--;
         }
     });
+    
     //TODO: This should really be an ID
     $(".resetButton").click(function() {
         console.log("RESET!!");
@@ -80,12 +79,18 @@ $(document).ready(function() {
             if (value == '') {
                 // we're resetting this cell to empty
                 filledCells--;
+                // should call isvalid on things in the invalid stack
+                for (id in invalidMap) {
+                    checkMove(id);
+                }
             }
             board[i] = value;
             $("#"+i).text(value);
             $("#"+i).removeClass("invalid");
-            $("#"+i).removeClass("success");
-               
+            $("#"+i).removeClass("success");   
+            for (id in invalidMap) {
+                delete invalidMap[id];
+            }            
         }
     });
     
@@ -96,9 +101,12 @@ $(document).ready(function() {
         $(this).text(inputValue);
         // console.log(board);
         if (inputValue == "") {
+            for (id in invalidMap) {
+                 checkMove(id);
+            }
             $(this).removeClass("invalid");
         } else {
-            isValid($(this));
+            checkMove($(this).attr("id"));
         }
     });
 });
@@ -122,7 +130,7 @@ function loadTable(game) {
                 board.push(value);              
             } else {
                 filledCells++;
-                console.log("filledCells = "+ filledCells);
+                // console.log("filledCells = "+ filledCells);
                 $(td).addClass ("non-editable");
                 board.push(value);
             }
@@ -134,7 +142,7 @@ function loadTable(game) {
     // console.log(board);
     body.appendChild(table);
 };
-
+    
 function checkIfComplete() {
     for (id = 0; id < 81; id++) {
         $("#"+id).addClass("success");
@@ -154,110 +162,101 @@ function getCol(y) {
     return y%9;
 };
 
-function isValid(cell) {
-    var cellId = $(cell).attr("id");
-    var valid = checkGrid(cellId) && checkRow(cellId) && checkCol(cellId); // potential bug in ordering
-
+function checkMove(cellId) {
+    var valid = isValid(cellId);
     if (valid) {
-        $(cell).removeClass("invalid");
         filledCells++;
-        // console.log("Added another filledCells = "+ filledCells);
-        if (filledCells == 81) { // magic numbers everywhere
+        if (invalidMap[cellId] == true) {
+            $("#"+cellId).removeClass("invalid");
+            // console.log("removed " + cellId + " to invalidMap");
+            delete invalidMap[cellId];
+            
+            for (id in invalidMap) {
+                checkMove(id);
+            }
+        }
+        if (filledCells == 81 && jQuery.isEmptyObject(invalidMap)) {
             checkIfComplete();
         }
     } else {
-        $(cell).addClass("invalid");
+        $("#"+cellId).addClass("invalid");
+        
+        invalidMap[cellId] = true;
+        // console.log("added " + cellId + " to invalidMap");
     }
+}
+
+function isValid(cellId) {
+    var valid = checkGrid(cellId) && checkRow(cellId) && checkCol(cellId); // potential bug in ordering
+    return valid;
+};
+
+function doCellsMatch(a, b) {
+    var same = false;
+    if (a != b ){
+        if (board[a] == board[b]) {
+            same = true;
+        }
+    }
+    return same;
 };
 
 
+function checkLine(cellId, stride) {
+    // var row = getRow(cellId);
+    var cellVal = $(board)[cellId];
+    var valid = true;
+
+}
 
 // Checks to see if there is another cell in this row that has the same value in it
 function checkRow(cellId) {
     var row = getRow(cellId);
-    var cellVal = $(board)[cellId];
-    
     var valid = true;
 
     for (i = 0; i < 9; i++) {
         var checkIndex = 9*row+i;
-        var checkVal = board[checkIndex];
-
-        // This should really be made smarter to ignore the other elements that are in the checking stack.
-        if (getCol(cellId) == i) {
-            continue; 
-        } else if (cellVal == checkVal) {
-            // console.log("we have a match " + cellVal + " matches " + (checkIndex) + ":" + $(board)[checkIndex]);
+        if (doCellsMatch(cellId, checkIndex)) {
+            // the two cells contain the same value
             valid = false;
+            // add this cell to a invalid stack, to be checked after every button click.
             break;
-        } else {
-            // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
-            if ($("#"+checkIndex).hasClass("invalid")) {
-                isValid($("#"+checkIndex));
-            }
-            // remove invalid class if it's there
-            // $("#"+checkIndex).removeClass("invalid");
         }
-    }
+    }    
     return valid;
 };
 
 // Checks to see if there is another cell in this row that has the same value in it
 function checkCol(cellId) {
     var col = getCol(cellId);
-    
     var valid = true;
-    var cellVal = $(board)[cellId];
 
     for (i = 0; i < 9; i++) {
         var checkIndex = 9*i+col;
-        var checkVal = board[checkIndex];
-
-        if (getRow(cellId) == i) {
-            continue;
-        } else if (cellVal == checkVal) {
+       if (doCellsMatch(cellId, checkIndex)) {
+            // the two cells contain the same value
             valid = false;
+            // add this cell to a invalid stack, to be checked after every button click.
             break;
-        } else {
-            // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
-            if ($("#"+checkIndex).hasClass("invalid")) {
-                isValid($("#"+checkIndex));
-            }
-            // remove invalid class if it's there
-            // $("#"+checkIndex).removeClass("invalid");
         }
     }
     return valid;
 }
 
 function checkGrid(cellId) {
-    var valid = true;
-    var cellVal = $(board)[cellId];
-    
+    var valid = true;    
     //work out which grid the cell lives in
     var grid = idToGridMap[cellId];
     // find the other ids that live in that grid
     var gridIds = gridToIdMap[grid];
 
-    console.log("looking for ids " + gridIds);
-
     for (i = 0; i < 9; i++) {
-        checkIndex = gridIds[i];
-        var checkVal = board[checkIndex];
-
-        if (cellId == checkIndex) {
-            continue;
-        } else if (cellVal == checkVal) {
-            // console.log("we have a match " + cellVal + " matches " + checkIndex + ":" + $(board)[checkIndex]);
+        var checkIndex = gridIds[i];
+       if (doCellsMatch(cellId, checkIndex)) {
+            // the two cells contain the same value
             valid = false;
+            // add this cell to a invalid stack, to be checked after every button click.
             break;
-        } else {
-            // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
-            if ($("#"+checkIndex).hasClass("invalid")) {
-                isValid($("#"+checkIndex));
-            }            
-            // remove invalid class if it's there
-            // $("#"+checkIndex).removeClass("invalid");
         }
     }
     return valid;

@@ -148,6 +148,10 @@ function checkRow(cellId) {
             break;
             highlightClash(checkVal);
         } else {
+            // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
+            if ($("#"+checkIndex).hasClass("invalid")) {
+                isValid($("#"+checkIndex));
+            }
             // remove invalid class if it's there
             // $("#"+checkIndex).removeClass("invalid");
         }
@@ -169,11 +173,14 @@ function checkCol(cellId) {
         if (getRow(cellId) == i) {
             continue;
         } else if (cellVal == checkVal) {
-            // console.log("we have a match " + cellVal + " matches " + checkIndex + ":" + $(board)[checkIndex]);
             valid = false;
             break;
             highlightClash(checkVal);
         } else {
+            // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
+            if ($("#"+checkIndex).hasClass("invalid")) {
+                isValid($("#"+checkIndex));
+            }
             // remove invalid class if it's there
             // $("#"+checkIndex).removeClass("invalid");
         }
@@ -204,6 +211,10 @@ function checkGrid(cellId) {
             break;
             highlightClash(checkVal);
         } else {
+            // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
+            if ($("#"+checkIndex).hasClass("invalid")) {
+                isValid($("#"+checkIndex));
+            }            
             // remove invalid class if it's there
             // $("#"+checkIndex).removeClass("invalid");
         }

@@ -2,6 +2,7 @@ body {
     /*color: red;*/
     text-align: center;
     font-family: helvetica, arial, sans-serif;
+    background-color: #ECFFFB;
 }
 
 div {
@@ -9,7 +10,7 @@ div {
 }
 
 table { 
-    /*background-color: red;*/
+    background-color: white;
     margin-left: auto;
     margin-right: auto;
     border-collapse: collapse;
@@ -25,19 +26,23 @@ td {
 
 /*  Outlining the 3x3 grids */
 td:first-child {
-  border-left:solid;
+    border-left:solid;
+    border-color: black;
 }
 
 td:nth-child(3n) {
-  border-right:solid ;
+    border-right:solid ;
+    border-color: black;
 }
 
 tr:first-child {
-  border-top:solid;
+    border-top:solid;
+    border-color: black;
 }
 
 tr:nth-child(3n) td {
-  border-bottom:solid ;
+    border-bottom:solid;
+    border-color: black;
 }
 
 button{
@@ -55,8 +60,17 @@ button{
     background-color: #FEB68E;
 }
 
+.invalid:hover {
+    background-color: #F1924E;    
+}
+
 .non-editable {
     background-color: #CBCBCB;
+    color: #555555;
+}
+
+.non-editable:hover {
+    background-color: #efefef;
 }
 
 /*pretty and square*/

@@ -12,6 +12,19 @@ var startGame = [
                   "","","",       "","8","",      "","7","9"
                 ];
 
+// var startGame = [
+//                   "5","3","4",     "6","7","8",      "9","1","2",
+//                   "6","7","2",      "1","9","5",    "3","4","8",
+//                   "1","9","8",     "3","4","2",       "5","6","7",  
+
+//                   "8","5","9",      "7","6","1",      "4","2","3",  
+//                   "4","2","6",      "8","5","3",     "7","9","1",  
+//                   "7","1","3",      "9","2","4",      "8","5","6",  
+                
+//                   "9","6","1",      "5","3","7",       "2","8","",
+//                   "2","8","7",       "4","1","9",    "6","3","5",
+//                   "3","4","5",       "2","8","6",      "1","7","9"
+//                 ];
 var idToGridMap = [ 0, 0, 0,  1, 1, 1,  2, 2, 2, 
                     0, 0, 0,  1, 1, 1,  2, 2, 2, 
                     0, 0, 0,  1, 1, 1,  2, 2, 2, 
@@ -38,6 +51,9 @@ var gridToIdMap = [ [0,1,2,9,10,11,18,19,20],       // grid 0
                   ];
 var board = [];
 var inputValue = '';
+var filledCells = 0;
+
+var checkingCells = [];
 
 $(document).ready(function() {
     $(".valueButton").click(function() {
@@ -50,7 +66,10 @@ $(document).ready(function() {
     });
     //TODO: This should really be an ID
     $(".delButton").click(function() {
-        inputValue = '';
+        if (inputValue != '') {
+            inputValue = '';
+            filledCells--;
+        }
     });
     //TODO: This should really be an ID
     $(".resetButton").click(function() {
@@ -58,9 +77,15 @@ $(document).ready(function() {
         // board = JSON.parse(JSON.stringify(startGame)); //yuck
         for (i = 0; i < 81; i++) {
             value = startGame[i];
+            if (value == '') {
+                // we're resetting this cell to empty
+                filledCells--;
+            }
             board[i] = value;
             $("#"+i).text(value);
             $("#"+i).removeClass("invalid");
+            $("#"+i).removeClass("success");
+               
         }
     });
     
@@ -96,13 +121,25 @@ function loadTable(game) {
                 $(td).addClass ("editable");
                 board.push(value);              
             } else {
+                filledCells++;
+                console.log("filledCells = "+ filledCells);
                 $(td).addClass ("non-editable");
                 board.push(value);
             }
         }
     }
+    if (filledCells == 81) {
+        checkIfComplete(table);
+    }
     // console.log(board);
     body.appendChild(table);
+};
+
+function checkIfComplete() {
+    for (id = 0; id < 81; id++) {
+        $("#"+id).addClass("success");
+    }
+    console.log("YOU ARE AWESOME!!");
 };
 
 // Is passed the cell's id value to return which row the cell sits in
@@ -126,6 +163,11 @@ function isValid(cell) {
     }
     if (valid) {
         $(cell).removeClass("invalid");
+        filledCells++;
+        console.log("Added another filledCells = "+ filledCells);
+        if (filledCells == 81) {
+            checkIfComplete();
+        }
     }
 };
 

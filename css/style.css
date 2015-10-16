@@ -22,6 +22,7 @@ td {
     line-height: 2em;
     width: 2em;
     text-align: center;
+    border-color: black;
 }
 
 /*  Outlining the 3x3 grids */
@@ -71,6 +72,13 @@ button{
 
 .non-editable:hover {
     background-color: #efefef;
+}
+
+.success {
+    background-color: #ADDAD3;
+}
+.success:hover {
+    background-color: #84D9D2;
 }
 
 /*pretty and square*/

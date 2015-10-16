@@ -58,14 +58,14 @@ var checkingCells = [];
 $(document).ready(function() {
     $(".valueButton").click(function() {
         inputValue = $(this).text();
-        
+
         $("#value").removeAttr("id");
 
         console.log("assigning " + inputValue);
         $(this).attr("ID", "value");
     });
     //TODO: This should really be an ID
-    $(".delButton").click(function() {
+    $("#clearButton").click(function() {
         if (inputValue != '') {
             inputValue = '';
             filledCells--;
@@ -156,39 +156,40 @@ function getCol(y) {
 
 function isValid(cell) {
     var cellId = $(cell).attr("id");
-    var valid = checkGrid(cellId) && checkRow(cellId) && checkCol(cellId);
+    var valid = checkGrid(cellId) && checkRow(cellId) && checkCol(cellId); // potential bug in ordering
 
-    if (!valid) {
-        $(cell).addClass("invalid");
-    }
     if (valid) {
         $(cell).removeClass("invalid");
         filledCells++;
-        console.log("Added another filledCells = "+ filledCells);
-        if (filledCells == 81) {
+        // console.log("Added another filledCells = "+ filledCells);
+        if (filledCells == 81) { // magic numbers everywhere
             checkIfComplete();
         }
+    } else {
+        $(cell).addClass("invalid");
     }
 };
+
+
 
 // Checks to see if there is another cell in this row that has the same value in it
 function checkRow(cellId) {
     var row = getRow(cellId);
+    var cellVal = $(board)[cellId];
     
     var valid = true;
-    var cellVal = $(board)[cellId];
 
     for (i = 0; i < 9; i++) {
         var checkIndex = 9*row+i;
         var checkVal = board[checkIndex];
 
+        // This should really be made smarter to ignore the other elements that are in the checking stack.
         if (getCol(cellId) == i) {
-            continue;
+            continue; 
         } else if (cellVal == checkVal) {
             // console.log("we have a match " + cellVal + " matches " + (checkIndex) + ":" + $(board)[checkIndex]);
             valid = false;
             break;
-            highlightClash(checkVal);
         } else {
             // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
             if ($("#"+checkIndex).hasClass("invalid")) {
@@ -217,7 +218,6 @@ function checkCol(cellId) {
         } else if (cellVal == checkVal) {
             valid = false;
             break;
-            highlightClash(checkVal);
         } else {
             // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
             if ($("#"+checkIndex).hasClass("invalid")) {
@@ -251,7 +251,6 @@ function checkGrid(cellId) {
             // console.log("we have a match " + cellVal + " matches " + checkIndex + ":" + $(board)[checkIndex]);
             valid = false;
             break;
-            highlightClash(checkVal);
         } else {
             // check to see if this other cell is invalid, if it is call isValid on that cell to see if the tag should be removed
             if ($("#"+checkIndex).hasClass("invalid")) {

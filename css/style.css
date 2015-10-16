@@ -82,10 +82,12 @@ button{
 }
 
 /*pretty and square*/
-.valueButton {
-    width: 2em;
+.value{
+   width: 2em;
 }
 
 #value {
     background-color: #ADDAD3;
 }
+
+

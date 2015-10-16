@@ -1,26 +1,26 @@
 body {
-	/*color: red;*/
-	text-align: center;
-	font-family: helvetica, arial, sans-serif;
+    /*color: red;*/
+    text-align: center;
+    font-family: helvetica, arial, sans-serif;
 }
 
 
 table { 
-	/*background-color: red;*/
-	margin-left: auto;
-	margin-right: auto;
-	border-collapse: collapse;
+    /*background-color: red;*/
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
 }
 
 td {
-	font-size: 24px;
-	height: 2em;
-	line-height: 2em;
-	width: 2em;
-	text-align: center;
+    font-size: 24px;
+    height: 2em;
+    line-height: 2em;
+    width: 2em;
+    text-align: center;
 }
 
-/* 	Outlining the 3x3 grids */
+/*  Outlining the 3x3 grids */
 td:first-child {
   border-left:solid;
 }
@@ -38,29 +38,29 @@ tr:nth-child(3n) td {
 }
 
 button {
-	font-size: 18px;
-	width: 2em;
-	height: 2em;
+    font-size: 18px;
+    width: 2em;
+    height: 2em;
 }
 
-/*	Highlighting the grid the user is focused on.
-	It may be useful to highlight the row and col in some way for the user. */
+/*  Highlighting the grid the user is focused on.
+    It may be useful to highlight the row and col in some way for the user. */
 .editable:hover {
-	background-color: #84D9D2;
+    background-color: #84D9D2;
 }
 
 .invalid {
-	background-color: #FEB68E;
+    background-color: #FEB68E;
 }
 
 .non-editable {
-	background-color: #CBCBCB;
+    background-color: #CBCBCB;
 }
 
 .valueBar {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #value {
-	background-color: #ADDAD3;
+    background-color: #ADDAD3;
 }

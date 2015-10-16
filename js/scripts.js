@@ -54,17 +54,16 @@ $(document).ready(function() {
     });
 
     $(".editable").click(function() {
-        // if (inputValue == '') {
-        //     console.log("select a number to add to this cell");
-        // } else {
-
-
-            board[$(this).attr("id")] = inputValue;
-            $(this).text(inputValue);
-            console.log(board);
+        //update the board
+        board[$(this).attr("id")] = inputValue;
+        // update the view
+        $(this).text(inputValue);
+        // console.log(board);
+        if (inputValue == "") {
+            $(this).removeClass("invalid");
+        } else {
             isValid($(this));
-            // alert("row is " + allInRow(this));
-        // }
+        }
     });
 });
 

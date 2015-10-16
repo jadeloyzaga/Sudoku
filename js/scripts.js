@@ -102,15 +102,19 @@ function checkRow(cellId) {
     var cellVal = $(board)[cellId];
 
     for (i = 0; i < 9; i++) {
-        var checkVal = board[9*row+i];
+        var checkIndex = 9*row+i;
+        var checkVal = board[checkIndex];
 
         if (getCol(cellId) == i) {
             continue;
         } else if (cellVal == checkVal) {
-            console.log("we have a match " + cellVal + " matches " + (9*row+i) + ":" + $(board)[9*row+i]);
+            console.log("we have a match " + cellVal + " matches " + (checkIndex) + ":" + $(board)[checkIndex]);
             valid = false;
             break;
             highlightClash(checkVal);
+        } else {
+            // remove invalid class if it's there
+            $("#"+checkIndex).removeClass("invalid");
         }
     }
     return valid;
@@ -124,15 +128,20 @@ function checkCol(cellId) {
     var cellVal = $(board)[cellId];
 
     for (i = 0; i < 9; i++) {
-        var checkVal = board[9*i+col];
+        var checkIndex = 9*i+col;
+        var checkVal = board[checkIndex];
 
         if (getRow(cellId) == i) {
             continue;
         } else if (cellVal == checkVal) {
-            console.log("we have a match " + cellVal + " matches " + (9*i+col) + ":" + $(board)[9*i+col]);
+            console.log("we have a match " + cellVal + " matches " + checkIndex + ":" + $(board)[checkIndex]);
             valid = false;
             break;
             highlightClash(checkVal);
+        } else {
+            // remove invalid class if it's there
+            $("#"+checkIndex).removeClass("invalid");
+
         }
     }
     return valid;

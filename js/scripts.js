@@ -48,11 +48,22 @@ $(document).ready(function() {
         console.log("assigning " + inputValue);
         $(this).attr("ID", "value");
     });
-
+    //TODO: This should really be an ID
     $(".delButton").click(function() {
         inputValue = '';
     });
-
+    //TODO: This should really be an ID
+    $(".resetButton").click(function() {
+        console.log("RESET!!");
+        // board = JSON.parse(JSON.stringify(startGame)); //yuck
+        for (i = 0; i < 81; i++) {
+            value = startGame[i];
+            board[i] = value;
+            $("#"+i).text(value);
+            $("#"+i).removeClass("invalid");
+        }
+    });
+    
     $(".editable").click(function() {
         //update the board
         board[$(this).attr("id")] = inputValue;

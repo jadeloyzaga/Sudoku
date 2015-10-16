@@ -40,10 +40,9 @@ tr:nth-child(3n) td {
   border-bottom:solid ;
 }
 
-.delButton{
+button{
     font-size: 18px;
     height: 2em;
-
 }
 
 /*  Highlighting the grid the user is focused on.
@@ -60,13 +59,11 @@ tr:nth-child(3n) td {
     background-color: #CBCBCB;
 }
 
+/*pretty and square*/
 .valueButton {
-    font-size: 18px;
     width: 2em;
-    height: 2em;
 }
 
 #value {
     background-color: #ADDAD3;
 }
-

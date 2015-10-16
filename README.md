@@ -7,7 +7,8 @@ So the "valid in row" and "valid in col" helper functions are up and running, bu
 My says to use Maps, evey ID points to which grid they live in
 - 0 to 8 -> grid 0 
 - 9 to 17 -> grid 1 
-- 18 to 26 -> grid 3, etc
+- 18 to 26 -> grid 3, etc.
+
 and then another map to point out all the ID's in a grid
 - 0 -> [0 - 8]
 - 0 -> [9 - 17]

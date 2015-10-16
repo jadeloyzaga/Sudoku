@@ -1,5 +1,20 @@
 # Sudoku
 
+10/15 - Approaching the 3x3 grid
+
+So the "valid in row" and "valid in col" helper functions are up and running, but now we have to tackle checking if the move is valid in it's little self contained 3x3 grid.
+
+My says to use Maps, evey ID points to which grid they live in
+- 0 to 8 -> grid 0 
+- 9 to 17 -> grid 1 
+- 18 to 26 -> grid 3, etc
+and then another map to point out all the ID's in a grid
+- 0 -> [0 - 8]
+- 0 -> [9 - 17]
+- 0 -> [18 - 26], etc
+
+It will make this look up process faster.
+
 10/14 - Thinking about user input
 
 Simple interface is done, but now we have to consider how to implement adding the user's input.

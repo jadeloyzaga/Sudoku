@@ -126,5 +126,6 @@ A checker wouldn't hold this extra information, but rather just check after a us
   - This is good for sudoku's that might have more then 1 valid solution.
   - Doesn't allow the user to use the program to solve the sudoku, just their fuzzy logic.
 
-Oh goodness you actually read all that.. Cheers! 
-- Jade
+Oh goodness you actually read all that.. 
+Cheers!
+Jade

@@ -1,3 +1,4 @@
+/*would still need to add in phone and tablet styling bits to make it look extra pretty*/
 body {
     /*color: red;*/
     text-align: center;
@@ -46,9 +47,14 @@ tr:nth-child(3n) td {
     border-color: black;
 }
 
-button{
+button {
     font-size: 18px;
     height: 2em;
+}
+
+ol {
+    text-align: left;
+    list-style-position:inside;
 }
 
 /*  Highlighting the grid the user is focused on.
@@ -86,8 +92,6 @@ button{
    width: 2em;
 }
 
-#value {
+#inputValue {
     background-color: #ADDAD3;
 }
-
-

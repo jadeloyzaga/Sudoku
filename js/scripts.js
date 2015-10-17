@@ -12,7 +12,7 @@ var startGame = [
                   "","","",       "","8","",      "","7","9"
                 ];
 
-// var startGame = [
+// var startGame1 = [
 //                   "5","3","4",     "6","7","8",      "9","1","2",
 //                   "6","7","2",      "1","9","5",    "3","4","8",
 //                   "1","9","8",     "3","4","2",       "5","6","7",  
@@ -73,27 +73,12 @@ $(document).ready(function() {
     //TODO: This should really be an ID
     $(".resetButton").click(function() {
         console.log("RESET!!");
-        // board = JSON.parse(JSON.stringify(startGame)); //yuck
-        for (i = 0; i < 81; i++) {
-            value = startGame[i];
-            if (value == '') {
-                // we're resetting this cell to empty
-                filledCells--;
-                // should call isvalid on things in the invalid stack
-                for (id in invalidMap) {
-                    checkMove(id);
-                }
-            }
-            board[i] = value;
-            $("#"+i).text(value);
-            $("#"+i).removeClass("invalid");
-            $("#"+i).removeClass("success");   
-            for (id in invalidMap) {
-                delete invalidMap[id];
-            }            
-        }
+        loadTable(startGame);
     });
-    
+});
+
+function setupCellClickEvents()
+{
     $(".editable").click(function() {
         var cellId = $(this).attr("id");
         if (inputValue == "" && board[cellId] != "" ) {
@@ -112,17 +97,22 @@ $(document).ready(function() {
             }
             $(this).removeClass("invalid");
             delete invalidMap[cellId];
-            console.log("removed " + cellId + " to invalidMap: ");
-            console.log(invalidMap);
+            // console.log("removed " + cellId + " to invalidMap: ");
+            // console.log(invalidMap);
         } else {
             checkMove(cellId);
             filledCells++;
         }
     });
-});
+}
 
 function loadTable(game) {
-    var body = document.body;
+    // Reset global state
+    filledCells = 0;   
+    invalidMap = {};
+    board = [];
+
+    // Create a table to populate with the puzzle
     var table  = document.createElement('table');
     table.border = "1";
 
@@ -137,20 +127,19 @@ function loadTable(game) {
             td.id = index;
             if (value == "") {
                 $(td).addClass ("editable");
-                board.push(value);              
             } else {
                 filledCells++;
-                // console.log("filledCells = "+ filledCells);
                 $(td).addClass ("non-editable");
-                board.push(value);
             }
+            board[index] = value;
         }
     }
-    if (filledCells == 81) {
-        checkIfComplete(table);
-    }
-    // console.log(board);
-    body.appendChild(table);
+
+    // Populate the placeholder in the DOM with our table
+    $("#puzzle").html(table);
+
+    // Attach the on-click events
+    setupCellClickEvents();
 };
     
 function checkIfComplete() {
@@ -178,8 +167,8 @@ function checkMove(cellId) {
         if (invalidMap[cellId] == true) {
             $("#"+cellId).removeClass("invalid");
             
-            console.log("removed " + cellId + " to invalidMap: ");
-            console.log(invalidMap);
+            // console.log("removed " + cellId + " to invalidMap: ");
+            // console.log(invalidMap);
 
             delete invalidMap[cellId];
             
@@ -196,8 +185,8 @@ function checkMove(cellId) {
         $("#"+cellId).addClass("invalid");
         if (invalidMap[cellId] != true) {        
             invalidMap[cellId] = true;
-            console.log("added " + cellId + " to invalidMap: ");
-            console.log(invalidMap);
+            // console.log("added " + cellId + " to invalidMap: ");
+            // console.log(invalidMap);
         }
     }
 }

@@ -1,3 +1,10 @@
+var SUDOKU_NUM_ROWS  = 9;
+var SUDOKU_NUM_COLS  = 9;
+var SUDOKU_NUM_GRIDS = 9;
+
+/**
+ * The initial board state - ideally pulled from the server
+ */
 var startGame = [
                   "5","3","",     "","7","",      "","","",
                   "6","","",      "1","9","5",    "","","",
@@ -12,82 +19,126 @@ var startGame = [
                   "","","",       "","8","",      "","7","9"
                 ];
 
-var idToGridMap = [ 0, 0, 0,  1, 1, 1,  2, 2, 2, 
-                    0, 0, 0,  1, 1, 1,  2, 2, 2, 
-                    0, 0, 0,  1, 1, 1,  2, 2, 2, 
+/**
+ * Build a mapping from cell ID to grid within the puzzle
+ *
+ * Ideally, this would be provided by the server but for now
+ * we'll just generate it here.
+ */
+var idToGridMap = [];
+for (var row = 0; row < SUDOKU_NUM_ROWS; row++)
+{
+    var gridRow = Math.floor(row / 3);
+    for (var col = 0; col < SUDOKU_NUM_COLS; col++)
+    {
+        var gridCol = Math.floor(col / 3);
+        var cellID = SUDOKU_NUM_COLS*row + col;
 
-                    3, 3, 3,  4, 4, 4,  5, 5, 5, 
-                    3, 3, 3,  4, 4, 4,  5, 5, 5, 
-                    3, 3, 3,  4, 4, 4,  5, 5, 5, 
+        idToGridMap[cellID] = 3*gridRow + gridCol;
+    }
+}
 
-                    6, 6, 6,  7, 7, 7,  8, 8, 8,                     
-                    6, 6, 6,  7, 7, 7,  8, 8, 8,                     
-                    6, 6, 6,  7, 7, 7,  8, 8, 8 
-                  ];
-       
-var gridToIdMap = [ [0,1,2,9,10,11,18,19,20],       // grid 0
-                    [3,4,5,12,13,14,21,22,23],      // grid 1
-                    [6,7,8,15,16,17,24,25,26],      // grid 2
-                    [27,28,29,36,37,38,45,46,47],   // grid 3
-                    [30,31,32,39,40,41,48,49,50],   // grid 4
-                    [33,34,35,42,43,44,51,52,53],   // grid 5
-                    [54,55,56,63,64,65,72,73,74],   // grid 6
-                    [57,58,59,66,67,68,75,76,77],   // grid 7
-                    [60,61,62,69,70,71,78,79,80]    // grid 8
-                  ];
+/**
+ * Build a mapping from grid ID to the cells
+ * contained within that grid.
+ *
+ * We need this to be able to check for
+ * duplicate values within a given grid.
+ */
+var gridToIdMap = [];
+for (var grid = 0; grid < SUDOKU_NUM_GRIDS; grid++)
+{
+    gridToIdMap.push([]);
+}
+for (var i = 0; i < SUDOKU_NUM_COLS*SUDOKU_NUM_ROWS; i++)
+{
+    gridToIdMap[idToGridMap[i]].push(i);
+}
 
 var board = [];
 var inputValue = '';
 var filledCells = 0;
 
-// for searching for valid/invalid moves
+/**
+ * For a given cell, whether or not it is currently marked
+ * as invalid.
+ *
+ * We revisit this periodically to see if
+ * an error in the puzzle has been fixed and thus it
+ * may be marked as correct again.
+ */
 var invalidMap = {};
 
 $(document).ready(function() {
+    /**
+     * Basic view logic to highlight which value
+     * will be applied to the board
+     */
     $(".valueButton").click(function() {
         inputValue = $(this).text();
         $("#inputValue").removeAttr("id");
         $(this).attr("ID", "inputValue");
     });
 
+    /**
+     * Adds the ability to clear existing values
+     * from editable cells in the board
+     */
     $("#clearButton").click(function() {
         if (inputValue != '') {
             inputValue = '';
         }
     });
     
-    //TODO: This should really be an ID
+    /**
+     * Gives the view the ability to reset the board state
+     */
     $("#resetButton").click(function() {
-        // console.log("RESET!!");
+        /**
+         * Rather than attempting to undo the user's actions,
+         * it's easier to load the table again from scratch.
+         */
         loadTable(startGame);
     });
 });
 
+/**
+ * Attaches click events to editable cells in the puzzle board.
+ */
 function setupCellClickEvents()
 {
     $(".editable").click(function() {
         var cellId = $(this).attr("id");
         if (inputValue == "" && board[cellId] != "" ) {
-            // We're deleting.
+            // We are deleting a previously filled cell
             filledCells--;
         }
-        //update the board
+
+        // Update the board state with the new value
         board[cellId] = inputValue;
-        // update the view
+
+        // Update the view to to reflect the new board state
         $(this).text(inputValue);
         
-        // console.log(board);
         if (inputValue == "") {
-            for (id in invalidMap) {
-                 checkMove(id);
-            }
+            /**
+             * When deleting a cell from the view, remove its invalid
+             * class and remove it from the invalid map
+             */
             $(this).removeClass("invalid");
             delete invalidMap[cellId];
-            // console.log("removed " + cellId + " to invalidMap: ");
-            // console.log(invalidMap);
         } else {
+            // Verify whether the new move is valid
             checkMove(cellId);
             filledCells++;
+        }
+        /**
+         * The new move may have fixed other previously
+         * invalid cells i.e. clearing a clashing cell or
+         * overriding the duplicate - let's check them again.
+         */
+        for (id in invalidMap) {
+             checkMove(id);
         }
     });
 }
@@ -153,9 +204,6 @@ function checkMove(cellId) {
         if (invalidMap[cellId] == true) {
             $("#"+cellId).removeClass("invalid");
             
-            // console.log("removed " + cellId + " to invalidMap: ");
-            // console.log(invalidMap);
-
             delete invalidMap[cellId];
             
             for (id in invalidMap) {
@@ -171,14 +219,12 @@ function checkMove(cellId) {
         $("#"+cellId).addClass("invalid");
         if (invalidMap[cellId] != true) {        
             invalidMap[cellId] = true;
-            // console.log("added " + cellId + " to invalidMap: ");
-            // console.log(invalidMap);
         }
     }
 }
 
 function isValid(cellId) {
-    var valid = checkGrid(cellId) && checkRow(cellId) && checkCol(cellId); // potential bug in ordering
+    var valid = checkGrid(cellId) && checkRow(cellId) && checkCol(cellId);
     return valid;
 };
 

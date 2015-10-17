@@ -20,6 +20,8 @@
         <h1>Let's play Sudoku</h1>
 
         <div class="valueBar">
+            <!-- This should be done programmatically, especially
+                 when considering non-9x9 grids -->
             <button class="valueButton value">1</button>
             <button class="valueButton value">2</button>
             <button class="valueButton value">3</button>
@@ -32,7 +34,9 @@
             <button id="clearButton" class="valueButton">Clear</button>
         </div>
 
-        <div id="puzzle"></div>
+        <div id="puzzle">
+            <!-- The Sudoku table is generated here -->
+        </div>
 
         <div class="valueBar">
             <button id="resetButton">Reset</button>

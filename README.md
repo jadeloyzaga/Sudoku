@@ -1,5 +1,6 @@
 # Sudoku
 ========
+
 How To Play
 -----------
 

@@ -226,12 +226,9 @@ function getCol(cellId) {
  * on the outcome (invalid values are highlighted).
  */
 function checkMove(cellId) {
-    console.log("in checkmove");
     var valid = isValid(cellId);
     if (valid) {
-        console.log("move was valid");
         if (invalidMap[cellId] == true) {
-            console.log("move was previously not valid");
             // The new move is valid but was previously invalid
             $("#"+cellId).removeClass("invalid");
             delete invalidMap[cellId];
@@ -242,15 +239,9 @@ function checkMove(cellId) {
             }
         }
 
-        console.log("checking if buard is full");
         // Once the board is full, check if we're done
         if (filledCells == 81 && jQuery.isEmptyObject(invalidMap)) {
-            console.log("displaying success");
             displaySuccess();
-        }
-        else
-        {
-            console.log("board ain't full brotha");
         }
     } else {
         // Invalid moves are highlighted

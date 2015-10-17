@@ -95,18 +95,28 @@ $(document).ready(function() {
     });
     
     $(".editable").click(function() {
+        var cellId = $(this).attr("id");
+        if (inputValue == "" && board[cellId] != "" ) {
+            // We're deleting.
+            filledCells--;
+        }
         //update the board
-        board[$(this).attr("id")] = inputValue;
+        board[cellId] = inputValue;
         // update the view
         $(this).text(inputValue);
+        
         // console.log(board);
         if (inputValue == "") {
             for (id in invalidMap) {
                  checkMove(id);
             }
             $(this).removeClass("invalid");
+            delete invalidMap[cellId];
+            console.log("removed " + cellId + " to invalidMap: ");
+            console.log(invalidMap);
         } else {
-            checkMove($(this).attr("id"));
+            checkMove(cellId);
+            filledCells++;
         }
     });
 });
@@ -165,14 +175,18 @@ function getCol(y) {
 function checkMove(cellId) {
     var valid = isValid(cellId);
     if (valid) {
-        filledCells++;
         if (invalidMap[cellId] == true) {
             $("#"+cellId).removeClass("invalid");
-            // console.log("removed " + cellId + " to invalidMap");
+            
+            console.log("removed " + cellId + " to invalidMap: ");
+            console.log(invalidMap);
+
             delete invalidMap[cellId];
             
             for (id in invalidMap) {
-                checkMove(id);
+                if (id != cellId) {
+                    checkMove(id);
+                }
             }
         }
         if (filledCells == 81 && jQuery.isEmptyObject(invalidMap)) {
@@ -180,9 +194,11 @@ function checkMove(cellId) {
         }
     } else {
         $("#"+cellId).addClass("invalid");
-        
-        invalidMap[cellId] = true;
-        // console.log("added " + cellId + " to invalidMap");
+        if (invalidMap[cellId] != true) {        
+            invalidMap[cellId] = true;
+            console.log("added " + cellId + " to invalidMap: ");
+            console.log(invalidMap);
+        }
     }
 }
 

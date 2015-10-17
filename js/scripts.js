@@ -153,10 +153,10 @@ function loadTable(game) {
     var table  = document.createElement('table');
     table.border = "1";
 
-    for (i = 0; i < 9; i++) {
+    for (i = 0; i < SUDOKU_NUM_ROWS; i++) {
         var tr = table.insertRow();
-        for (j = 0; j < 9; j++) {
-            var index = i*9+j;
+        for (j = 0; j < SUDOKU_NUM_COLS; j++) {
+            var index = i*SUDOKU_NUM_COLS+j;
             var value = $(game).get(index);
             var td = tr.insertCell();
 
@@ -179,43 +179,53 @@ function loadTable(game) {
     setupCellClickEvents();
 };
     
-function checkIfComplete() {
-    for (id = 0; id < 81; id++) {
+function displaySuccess() {
+    for (id = 0; id < SUDOKU_NUM_ROWS*SUDOKU_NUM_COLS; id++) {
         $("#"+id).addClass("success");
     }
     console.log("YOU ARE AWESOME!!");
 };
 
-// Is passed the cell's id value to return which row the cell sits in
-// 0 - 8
-function getRow(x) {
-    return Math.floor(x/9);
+/**
+ * Is passed the cell's id value to return which row the cell sits in
+ * 0 - 8
+ */
+function getRow(cellId) {
+    return Math.floor(cellId/SUDOKU_NUM_COLS);
 };
 
-// is passed the cell's id value to return which col the cell sits in
-// 0 - 8
-function getCol(y) {
-    return y%9;
+/*
+ * Is passed the cell's id value to return which col the cell sits in
+ * 0 - 8
+ */
+function getCol(cellId) {
+    return cellId%SUDOKU_NUM_COLS;
 };
 
+/**
+ * Checks whether a move is valid and updates the view depending
+ * on the outcome (invalid values are highlighted).
+ */
 function checkMove(cellId) {
     var valid = isValid(cellId);
     if (valid) {
         if (invalidMap[cellId] == true) {
+            // The new move is valid but was previously invalid
             $("#"+cellId).removeClass("invalid");
-            
             delete invalidMap[cellId];
-            
             for (id in invalidMap) {
                 if (id != cellId) {
                     checkMove(id);
                 }
             }
         }
+
+        // Once the board is full, check if we're done
         if (filledCells == 81 && jQuery.isEmptyObject(invalidMap)) {
-            checkIfComplete();
+            displaySuccess();
         }
     } else {
+        // Invalid moves are highlighted
         $("#"+cellId).addClass("invalid");
         if (invalidMap[cellId] != true) {        
             invalidMap[cellId] = true;
@@ -224,9 +234,8 @@ function checkMove(cellId) {
 }
 
 function isValid(cellId) {
-    var valid = checkGrid(cellId) && checkRow(cellId) && checkCol(cellId);
-    return valid;
-};
+    return checkGrid(cellId) && checkRow(cellId) && checkCol(cellId);
+}
 
 function doCellsMatch(a, b) {
     var same = false;
@@ -236,14 +245,6 @@ function doCellsMatch(a, b) {
         }
     }
     return same;
-};
-
-
-function checkLine(cellId, stride) {
-    // var row = getRow(cellId);
-    var cellVal = $(board)[cellId];
-    var valid = true;
-
 }
 
 // Checks to see if there is another cell in this row that has the same value in it
@@ -256,7 +257,6 @@ function checkRow(cellId) {
         if (doCellsMatch(cellId, checkIndex)) {
             // the two cells contain the same value
             valid = false;
-            // add this cell to a invalid stack, to be checked after every button click.
             break;
         }
     }    
@@ -270,10 +270,9 @@ function checkCol(cellId) {
 
     for (i = 0; i < 9; i++) {
         var checkIndex = 9*i+col;
-       if (doCellsMatch(cellId, checkIndex)) {
+        if (doCellsMatch(cellId, checkIndex)) {
             // the two cells contain the same value
             valid = false;
-            // add this cell to a invalid stack, to be checked after every button click.
             break;
         }
     }
@@ -289,14 +288,11 @@ function checkGrid(cellId) {
 
     for (i = 0; i < 9; i++) {
         var checkIndex = gridIds[i];
-       if (doCellsMatch(cellId, checkIndex)) {
+        if (doCellsMatch(cellId, checkIndex)) {
             // the two cells contain the same value
             valid = false;
-            // add this cell to a invalid stack, to be checked after every button click.
             break;
         }
     }
     return valid;
 }
-
-

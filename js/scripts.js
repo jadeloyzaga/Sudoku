@@ -20,6 +20,24 @@ var startGame = [
                 ];
 
 /**
+ * This initial board state can be used for testing the end-game
+ * condition.
+ */
+// var startGame = [
+//                    "5","3","4",     "6","7","8",      "9","1","2",
+//                    "6","7","2",      "1","9","5",    "3","4","8",
+//                    "1","9","8",     "3","4","2",       "5","6","7",  
+ 
+//                    "8","5","9",      "7","6","1",      "4","2","3",  
+//                    "4","2","6",      "8","5","3",     "7","9","1",  
+//                    "7","1","3",      "9","2","4",      "8","5","6",  
+                 
+//                    "9","6","1",      "5","3","7",       "2","8","",
+//                    "2","8","7",       "4","1","9",    "6","3","5",
+//                    "3","4","5",       "2","8","6",      "1","7","9"
+//                  ];
+
+/**
  * Build a mapping from cell ID to grid within the puzzle
  *
  * Ideally, this would be provided by the server but for now
@@ -128,9 +146,9 @@ function setupCellClickEvents()
             $(this).removeClass("invalid");
             delete invalidMap[cellId];
         } else {
+            filledCells++;
             // Verify whether the new move is valid
             checkMove(cellId);
-            filledCells++;
         }
         /**
          * The new move may have fixed other previously
@@ -183,6 +201,7 @@ function displaySuccess() {
     for (id = 0; id < SUDOKU_NUM_ROWS*SUDOKU_NUM_COLS; id++) {
         $("#"+id).addClass("success");
     }
+    $("#sucessText").html("<h2>Well Done!</h2>")
     console.log("YOU ARE AWESOME!!");
 };
 
@@ -207,9 +226,12 @@ function getCol(cellId) {
  * on the outcome (invalid values are highlighted).
  */
 function checkMove(cellId) {
+    console.log("in checkmove");
     var valid = isValid(cellId);
     if (valid) {
+        console.log("move was valid");
         if (invalidMap[cellId] == true) {
+            console.log("move was previously not valid");
             // The new move is valid but was previously invalid
             $("#"+cellId).removeClass("invalid");
             delete invalidMap[cellId];
@@ -220,9 +242,15 @@ function checkMove(cellId) {
             }
         }
 
+        console.log("checking if buard is full");
         // Once the board is full, check if we're done
         if (filledCells == 81 && jQuery.isEmptyObject(invalidMap)) {
+            console.log("displaying success");
             displaySuccess();
+        }
+        else
+        {
+            console.log("board ain't full brotha");
         }
     } else {
         // Invalid moves are highlighted
